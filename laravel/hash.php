@@ -28,6 +28,10 @@ class Hash {
 		{
 			$salt = openssl_random_pseudo_bytes(16);
 		}
+		else if (function_exists('mcrypt_create_iv'))
+		{
+			$salt = mcrypt_create_iv(16);
+		}
 		else
 		{
 			$salt = Str::random(40);
@@ -49,5 +53,29 @@ class Hash {
 	{
 		return crypt($value, $hash) === $hash;
 	}
-
+	
+	public static function sha256($value, $raw = false)
+	{
+		return hash('sha256', $value, $raw);
+	}
+	
+	public static function hmac_sha256($value, $raw = false)
+	{
+		return hash_hmac('sha256', $value, static::key(), $raw);
+	}
+	
+	public static function sha512($value, $raw = false)
+	{
+		return hash('sha512', $value, $raw);
+	}
+	
+	public static function hmac_sha512($value, $raw = false)
+	{
+		return hash_hmac('sha512', $value, static::key(), $raw);
+	}
+	
+	protected static function key()
+	{
+		return Config::get('application.key');
+	}
 }
