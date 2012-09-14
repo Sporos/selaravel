@@ -38,6 +38,8 @@ class Database {
 	 */
 	public static function connection($connection = null)
 	{
+		$connection = null;
+		
 		if (is_null($connection)) $connection = Config::get('database.default');
 
 		if ( ! isset(static::$connections[$connection]))
